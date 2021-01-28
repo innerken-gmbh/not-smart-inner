@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="b6c5b43b-45dd-41df-a2e5-ae2f01ce0f31" name="innerkenOffice" url="http://ik0001.ngrok.aaden.io:8000">
+        <fileTransfer rootFolder="/home/juhaodong/larkbot/" accessType="SFTP" host="192.168.1.178" port="22" sshConfigId="4173644c-eab5-4c33-a057-dcd39afd409b" sshConfig="juhaodong@192.168.1.178:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
