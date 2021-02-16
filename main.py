@@ -94,6 +94,9 @@ class RequestHandler(BaseHTTPRequestHandler):
         # 机器人 echo 收到的消息
         send_message(access_token, event.get("open_chat_id"), '已经收到消息：' + text)
 
+        if '值日生' in text:
+            send_message(access_token, event.get('open_chat_id'), find_today_cleaner())
+
         if 'help' in text:
             send_message(access_token, event.get('open_chat_id'), '''
 @我 print DeviceId,deviceName,comment
@@ -179,15 +182,20 @@ def check_time_with_pattern(pattern):
     now = datetime.datetime.now()
     if ':' in pattern:
         [h, m, s] = pattern.split(':')
+        print(now.hour, now.minute, now.second)
         return now.hour == int(h) and now.minute == int(m) and now.second == int(s)
     else:
         return now.minute % int(pattern) == 0 and now.second == 0
 
 
-def find_and_send_today_cleaner(token):
+def find_today_cleaner():
     response = requests.get("http://localhost:8013/employee/today")
+    return response.text
+
+
+def find_and_send_today_cleaner(token):
     _token = token[0]
-    info = response.text
+    info = find_today_cleaner()
     print(info)
     groups = get_group(_token)
 
@@ -205,7 +213,7 @@ def update_token(token):
 
 period_tasks = [
     {
-        'pattern': '9:30:0',
+        'pattern': '10:30:0',
         'task': find_and_send_today_cleaner
     },
     {
