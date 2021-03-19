@@ -91,16 +91,23 @@ class RequestHandler(BaseHTTPRequestHandler):
             return
 
         text = event.get("text")
+
         # 机器人 echo 收到的消息
         send_message(access_token, event.get("open_chat_id"), '已经收到消息：' + text)
 
         if '值日生' in text:
-            send_message(access_token, event.get('open_chat_id'), find_today_cleaner())
+                send_message(access_token, event.get('open_chat_id'), find_today_cleaner())
 
         if 'help' in text:
             send_message(access_token, event.get('open_chat_id'), '''
 @我 print DeviceId,deviceName,comment
 ''')
+        if '在线' in text:
+            send_message(access_token, event.get('open_chat_id'), "我来看看谁上班时间不在线")
+
+        if '狗' in text:
+                send_message(access_token, event.get('open_chat_id'), "汪汪汪")
+
         if 'print' in text:
             print(text.split('print ').pop().split(','))
             arr = text.split('print ').pop().split(',')
@@ -173,6 +180,7 @@ def get_group(token):
     rsp_body = response.read().decode('utf-8')
     rsp_dict = json.loads(rsp_body)
     code = rsp_dict.get("code", -1)
+
     if code != 0:
         print("send message error, code = ", code, ", msg =", rsp_dict.get("msg", ""))
     return rsp_dict['data']['groups']
@@ -191,6 +199,15 @@ def check_time_with_pattern(pattern):
 def find_today_cleaner():
     response = requests.get("http://localhost:8013/employee/today")
     return response.text
+
+
+def check_who_is_not_online(token):
+    _token = token[0]
+    groups = get_group(_token)
+    for g in groups:
+        print('正在向' + g['name'] + '发送消息:')
+        chat = "请保持上班时间lark在线"
+        send_message(_token, g['chat_id'], chat)
 
 
 def find_and_send_today_cleaner(token):
@@ -219,7 +236,7 @@ period_tasks = [
     {
         'pattern': '5',
         'task': update_token
-    }
+    },
 ]
 
 
