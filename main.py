@@ -84,7 +84,6 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.response("")
             return
 
-        # 调用发消息 API 之前，先要获取 API 调用凭证：tenant_access_token
         access_token = get_tenant_access_token()
         if access_token == "":
             self.response("")
@@ -92,7 +91,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 
         text = event.get("text")
         # 机器人 echo 收到的消息
-        send_message(access_token, event.get("open_chat_id"), '已经收到消息：' + text)
+        send_message(access_token, event.get('open_chat_id'), '')
 
         if '值日生' in text:
             send_message(access_token, event.get('open_chat_id'), find_today_cleaner())
