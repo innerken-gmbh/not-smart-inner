@@ -90,8 +90,6 @@ class RequestHandler(BaseHTTPRequestHandler):
             return
 
         text = event.get("text")
-        # 机器人 echo 收到的消息
-        send_message(access_token, event.get('open_chat_id'), '')
 
         if '值日生' in text:
             send_message(access_token, event.get('open_chat_id'), find_today_cleaner())
@@ -100,6 +98,9 @@ class RequestHandler(BaseHTTPRequestHandler):
             send_message(access_token, event.get('open_chat_id'), '''
 @我 print DeviceId,deviceName,comment
 ''')
+        if '刘畅' in text and '傻子' in text:
+            send_message(access_token, event.get('open_chat_id'), '不是，但是他是我儿子')
+
         if 'print' in text:
             print(text.split('print ').pop().split(','))
             arr = text.split('print ').pop().split(',')
