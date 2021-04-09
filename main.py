@@ -89,19 +89,25 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.response("")
             return
 
+
+
+
         text = event.get("text")
 
-        if '值日生' in text:
+        if '?' in text:
+            send_message(access_token, event.get('open_chat_id'), '不知道不知道，问你董总去')
+
+        elif '值日生' in text:
             send_message(access_token, event.get('open_chat_id'), find_today_cleaner())
 
-        if 'help' in text:
+        elif 'help' in text:
             send_message(access_token, event.get('open_chat_id'), '''
 @我 print DeviceId,deviceName,comment
 ''')
-        if '刘畅' in text and '傻子' in text:
+        elif '刘畅' in text and '傻子' in text:
             send_message(access_token, event.get('open_chat_id'), '不是，但是他是我儿子')
 
-        if 'print' in text:
+        elif 'print' in text:
             print(text.split('print ').pop().split(','))
             arr = text.split('print ').pop().split(',')
             while len(arr) < 3:
@@ -119,6 +125,9 @@ class RequestHandler(BaseHTTPRequestHandler):
                 'postOp': 'print'
             })
             print(response.text)
+
+        else:
+            send_message(access_token, event.get('open_chat_id'), '行行行，知道了，之后再说把')
 
         self.response("")
         return
