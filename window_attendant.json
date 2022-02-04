@@ -1,0 +1,9 @@
+{
+  "attendants": [
+    {
+      "name": "Boss"
+    }
+  ],
+  "dateFormat": "%Y-%m-%d",
+  "message": "f'''{date}: {attendant['name']}负责开窗'''"
+}

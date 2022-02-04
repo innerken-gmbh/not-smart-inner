@@ -249,6 +249,28 @@ def find_and_send_today_cleaner(token):
         send_message(_token, g['chat_id'], chat)
 
 
+def send_to_groups(token, content, group_filter=None):
+    groups = get_group(token)
+    for g in groups:
+        if group_filter is not None:
+            if not group_filter(g):
+                continue
+        print('正在向' + g['name'] + '发送消息:')
+        send_message(token, g['chat_id'], content)
+
+
+def find_and_send_today_window_attendant(token):
+    from random import choice
+    with open('window_attendant.json', encoding='utf-8') as f:
+        settings = json.load(f)
+        args = {
+            'date': datetime.datetime.now().strftime(settings['dateFormat']),
+            'attendant': choice(settings['attendants']),
+        }
+        msg = eval(settings['message'], args)
+        send_to_groups(token, msg)
+
+
 def update_token(token):
     print("Old Token--->" + token[0])
     token[0] = get_tenant_access_token()
@@ -259,6 +281,10 @@ period_tasks = [
     {
         'pattern': '10:30:0',
         'task': find_and_send_today_cleaner
+    },
+    {
+        'pattern': '09:30:0',
+        'task': find_and_send_today_window_attendant
     },
     {
         'pattern': '5',
