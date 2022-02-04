@@ -2,6 +2,7 @@
   "attendants": [
     {
       "name": "Boss"
+      "disabled": "dayOfWeek in [3,6,7]"
     }
   ],
   "dateFormat": "%Y-%m-%d",

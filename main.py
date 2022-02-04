@@ -262,12 +262,20 @@ def send_to_groups(token, content, group_filter=None):
 def find_and_send_today_window_attendant(token):
     from random import choice
     with open('window_attendant.json', encoding='utf-8') as f:
+        now = datetime.datetime.now()
         settings = json.load(f)
-        args = {
-            'date': datetime.datetime.now().strftime(settings['dateFormat']),
-            'attendant': choice(settings['attendants']),
-        }
-        msg = eval(settings['message'], args)
+
+        attendants = [a for a in settings['attendants'] if a['disabled'] is None or eval(a['disabled'], {
+            'dayOfWeek': now.isoweekday()
+        })]
+
+        if len(attendants) < 1:
+            return
+
+        msg = eval(settings['message'], {
+            'date': now.strftime(settings['dateFormat']),
+            'attendant': choice(attendants),
+        })
         send_to_groups(token, msg)
 
 
