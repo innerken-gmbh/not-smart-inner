@@ -251,7 +251,7 @@ def find_and_send_today_cleaner(token):
 
 def send_to_groups(token, content, group_filter=None):
     _token = token[0]
-    groups = get_group(_token[0])
+    groups = get_group(_token)
     for g in groups:
         if group_filter is not None:
             if not group_filter(g):
@@ -266,7 +266,7 @@ def find_and_send_today_window_attendant(token):
         now = datetime.datetime.now()
         settings = json.load(f)
 
-        attendants = [a for a in settings['attendants'] if a['disabled'] is None or eval(a['disabled'], {
+        attendants = [a for a in settings['attendants'] if a['disabled'] is None or not eval(a['disabled'], {
             'dayOfWeek': now.isoweekday()
         })]
 
