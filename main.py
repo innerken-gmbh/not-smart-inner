@@ -250,18 +250,19 @@ def find_and_send_today_cleaner(token):
 
 
 def send_to_groups(token, content, group_filter=None):
-    groups = get_group(token)
+    _token = token[0]
+    groups = get_group(_token[0])
     for g in groups:
         if group_filter is not None:
             if not group_filter(g):
                 continue
         print('正在向' + g['name'] + '发送消息:')
-        send_message(token, g['chat_id'], content)
+        send_message(_token, g['chat_id'], content)
 
 
 def find_and_send_today_window_attendant(token):
     from random import choice
-    with open('window_attendant.json', encoding='utf-8') as f:
+    with open('/home/juhaodong/larkbot/window_attendant.json', encoding='utf-8') as f:
         now = datetime.datetime.now()
         settings = json.load(f)
 
