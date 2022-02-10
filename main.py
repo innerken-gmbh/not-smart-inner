@@ -261,23 +261,10 @@ def send_to_groups(token, content, group_filter=None):
 
 
 def find_and_send_today_window_attendant(token):
-    from random import choice
-    with open('/home/juhaodong/larkbot/window_attendant.json', encoding='utf-8') as f:
-        now = datetime.datetime.now()
-        settings = json.load(f)
+    from window_attendant import get_window_attendant_message
 
-        attendants = [a for a in settings['attendants'] if a['disabled'] is None or not eval(a['disabled'], {
-            'dayOfWeek': now.isoweekday()
-        })]
-
-        if len(attendants) < 1:
-            return
-
-        msg = eval(settings['message'], {
-            'date': now.strftime(settings['dateFormat']),
-            'attendant': choice(attendants),
-        })
-        send_to_groups(token, msg)
+    msg = get_window_attendant_message()
+    send_to_groups(token, msg)
 
 
 def update_token(token):
