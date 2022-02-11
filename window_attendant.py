@@ -1,9 +1,10 @@
 import json
-from datetime import datetime, timedelta
 import random
+from datetime import datetime, timedelta
+from typing import Optional
 
 
-def get_window_attendant_message(date: datetime = None, config_path: str = None):
+def get_window_attendant_message(date: Optional[datetime] = None, config_path: Optional[str] = None) -> Optional[str]:
     now = date if date is not None else datetime.now()
     path = config_path if config_path is not None else '/home/juhaodong/larkbot/window_attendant.json'
     with open(path, encoding='utf-8') as f:
@@ -14,14 +15,14 @@ def get_window_attendant_message(date: datetime = None, config_path: str = None)
         })]
 
         if len(attendants) < 1:
-            return
+            return None
 
         rng = random.Random(int(now.strftime('%Y%m%d')))
 
-        msg = eval(settings['message'], {
+        msg = str(eval(settings['message'], {
             'date': now.strftime(settings['dateFormat']),
             'attendant': rng.choice(attendants),
-        })
+        }))
 
         return msg
 
